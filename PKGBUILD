@@ -30,13 +30,11 @@ md5sums=('SKIP')
 validpgpkeys=()
 
 prepare() {
-	cd xec
-	cat xec.cpp
+	cat xec.c
 }
 
 build() {
-	cd xec
-	g++ xec.cpp -o xec
+	gcc xec.c -o xec
 }
 
 check() {
