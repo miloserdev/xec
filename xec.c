@@ -147,11 +147,16 @@ int xec_wait_write()
 
 char* xec_style(uint8_t data)
 {
+	char *x = malloc(32);
+	data = (data < 30 ? 30 : data);
+	sprintf(x, "\033[38;2;%d;%d;%dm", data, data, data);
+	return x;
+	
 	switch(data)
 	{
 		
 		case 0xFF:	{ return KGRN; break; }
-		case 0x00:	{ return KBLK; break; }
+		case 0x00:	{ return "\033[38;2;50;50;50m"; break; }
 		default:	{ return KWHT; break; }
 	}
 }
