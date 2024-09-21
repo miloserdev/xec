@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/file.h>
 
 
-#define clear() printf("\033[H\033[J")
-#define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
+#define xec_clear() printf("\033[H\033[J")
+#define xec_gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 #define PORT "/dev/port"
 int xec_fd = -1;
@@ -38,6 +37,14 @@ typedef enum
 	xec_query		= 0x84
 } xec_command_t;
 
+uint8_t xec_port_read(xec_port_t port);
+uint8_t xec_port_write(xec_port_t port, uint8_t data);
+int xec_wait_status(xec_status_t status, bool set);
+int xec_wait_read();
+int xec_wait_write();
+int xec_monitor();
+int xec_init();
+int xec_close();
 
 uint8_t xec_port_read(xec_port_t port)
 {
@@ -134,7 +141,7 @@ int xec_monitor()
 	}
 	printf("\n");
 
-	gotoxy(0, 0);
+	xec_gotoxy(0, 0);
 
 	xec_monitor();
 }
@@ -165,10 +172,3 @@ int xec_close()
 	return 0;
 }
 
-int main()
-{
-	xec_init();
-
-	clear();
-	xec_monitor();
-}
