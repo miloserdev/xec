@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                         uint8_t a = arg_to_int(argv[i+1]);
                         uint8_t b = arg_to_int(argv[i+2]);
 
-                        debug("write %02x to %02x", a, b);
+                        debug("write %02x to %02x", b, a);
                         
                         xec_wait_write();
 			xec_port_write(command_port, xec_write);
