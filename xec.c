@@ -163,13 +163,12 @@ char* xec_style(uint8_t data)
 
 int xec_monitor()
 {
-
 	printf(_reset);
 	printf("  │ ");
 	printf(_inverse);
 	for (uint16_t x = 0; x < 16; x++)
 	{
-		printf("%02X%s", x, (x != 16-1 ? " " : "")); // FIX!
+		printf("%02X%s", x, /* (x != 16-1 ? " " : "") */ " "); // FIX!
 		//printf(_inverse "%02X" _reset " ", x);
 	}
 	printf(_reset "\n");
@@ -192,10 +191,10 @@ int xec_monitor()
 
 		if ( (i % 16) == 0 )
 		{
-			printf("\n" _reset _inverse "%02X" _reset "│ ", i);
+			printf("\n" _reset _inverse "\033[48;2;0;0;0m" "%02X" _reset "│ ", i);
 		}
 
-		printf("%s%02X " _reset, xec_style(data), data);
+		printf("\033[48;2;0;0;0m" "%s%02X " _reset, xec_style(data), data);
 	}
 	printf("\n");
 
