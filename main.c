@@ -6,10 +6,6 @@
 #define debug(__format, ...) { printf("___ %s : %d : %s ___ "__format" \n", \
                                         __FILE__, __LINE__, __func__, __VA_ARGS__); }
 
-int init_atom(char atom);
-int init_arg_long(char *arg);
-
-
 /// XEC params
 bool _xec_monitor = 0;
 bool _xec_read = 0;
@@ -53,7 +49,7 @@ int main(int argc, char *argv[])
                 }
                 else if (0 == strcmp(argv[i], "write"))
                 {
-                        /* read */
+                        /* write */
                         if (argv[i+1] == NULL) { debug("%s ", "read address malfunction"); err_code = -1; goto exit; }
                         if (argv[i+2] == NULL) { debug("%s ", "write address malfunction"); err_code = -1; goto exit; }
 
@@ -76,7 +72,7 @@ int main(int argc, char *argv[])
 
                 else if (0 == strcmp(argv[i], "monitor"))
                 {
-                        /* read */
+                        /* monitor */
                         xec_monitor();
 
                         return 0;
@@ -97,41 +93,3 @@ exit:
 	xec_clear();
 	xec_monitor();
  */
-
-
- int init_atom(char atom)
-{
-        switch (atom)
-        {
-                case 'm':       { debug("%s ", "m"); _xec_monitor = 1; break; }
-                case 'r' :      { debug("%s ", "r"); _xec_read = 1; break; }
-                case 'w' :      { debug("%s ", "w"); _xec_write = 1; break; }
-        }
-}
-
-int init_arg_long(char *arg)
-{
-        if ( strcmp(arg, "--monitor") == 0 )
-        {
-                debug("%s ", "--monitor");
-                _xec_monitor = 1;
-        }
-
-        else if ( strcmp(arg, "--read") == 0 )
-        {
-                debug("%s ", "--read");
-                _xec_read = 1;
-        }
-
-        else if ( strcmp(arg, "--write") == 0 )
-        {
-                debug("%s ", "--write");
-                _xec_write = 1;
-        }
-
-
-        else if ( strcmp(arg, "--help") == 0 )
-        {
-                debug("%s ", "--help");
-        }
-}

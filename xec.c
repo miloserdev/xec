@@ -6,6 +6,26 @@
 #include <sys/file.h>
 
 
+
+#define _reset  "\033[0m"
+#define KBLK "\e[0;30m"
+#define KRED  "\033[31m"
+#define KGRN  "\033[32m"
+#define KYEL  "\033[33m"
+#define KBLU  "\033[34m"
+#define KMAG  "\033[35m"
+#define KCYN  "\033[36m"
+#define KWHT  "\033[37m"
+#define KLRD  "\033[1;31m"
+#define KLGN  "\033[1;32m"
+#define _inverse  "\033[1;7m"
+
+#define _bold "\x1B[1m"
+#define _underline "\x1B[4m"
+
+
+
+
 #define xec_clear() printf("\033[H\033[J")
 #define xec_gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
@@ -125,8 +145,37 @@ int xec_wait_write()
 	return xec_wait_status(input_buffer_full, false);
 }
 
+char* xec_style(uint8_t data)
+{
+	switch(data)
+	{
+		
+		case 0xFF:	{ return KGRN; break; }
+		case 0x00:	{ return KBLK; break; }
+		default:	{ return KWHT; break; }
+	}
+}
+
 int xec_monitor()
 {
+
+	printf(_reset);
+	printf("  │ ");
+	printf(_inverse);
+	for (uint16_t x = 0; x < 16; x++)
+	{
+		printf("%02X%s", x, (x != 16-1 ? " " : "")); // FIX!
+		//printf(_inverse "%02X" _reset " ", x);
+	}
+	printf(_reset "\n");
+	printf("──┼");
+	for (uint16_t x = 0; x < 16*3; x++)
+	{
+		printf("─");
+	}
+	//printf("\n");
+	printf(_reset);
+
 	for (uint32_t i = 0; i < 256; i++)
 	{
 		xec_wait_write();
@@ -136,14 +185,17 @@ int xec_monitor()
 		xec_wait_read();
 		uint8_t data = xec_port_read(data_port);
 
-		bool nl = (i % 16 == 0);
-		printf("%s 0x%02X", nl ? "\n" : "", data);
+		if ( (i % 16) == 0 )
+		{
+			printf("\n" _reset _inverse "%02X" _reset "│ ", i);
+		}
+
+		printf("%s%02X " _reset, xec_style(data), data);
 	}
 	printf("\n");
 
-	xec_gotoxy(0, 0);
-
-	xec_monitor();
+//	xec_gotoxy(0, 0);
+//	xec_monitor();
 }
 
 int xec_init()
