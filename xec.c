@@ -173,7 +173,7 @@ int xec_monitor()
 	}
 	printf(_reset "\n");
 	printf("──┼");
-	for (uint16_t x = 0; x < 16*3; x++)
+	for (uint16_t x = 0; x < 16*3 + 1; x++)
 	{
 		printf("─");
 	}
